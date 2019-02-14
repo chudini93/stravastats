@@ -3,10 +3,15 @@ class App {
     try {
       console.log("Redirect to auth.");
       var response = "";
-      request(
-        "GET",
-        "https://www.strava.com/oauth/authorize?client_id=32572&redirect_uri=http://localhost:5000/&response_type=code&scope=activity:read_all"
-      );
+      // if (authenticated == undefined || !authenticated) {
+      console.log("User not authenticated");
+      // } else {
+      //   console.log("User authenticated");
+      // }
+      // request(
+      //   "GET",
+      //   "https://www.strava.com/oauth/authorize?client_id=32572&redirect_uri=http://localhost:5000/&response_type=code&scope=activity:read_all"
+      // );
       this.render();
     } catch (err) {
       alert(`Error: ${err.message}`);
