@@ -27,24 +27,19 @@ app.get("/oauth/redirect", (req, res) => {
   const requestToken = req.query.code;
   axios({
     method: "POST",
-    url: `https://www.strava.com/oauth/token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}&grantType="${grantTypeAuthorization}"`,
+    url: `https://www.strava.com/oauth/token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}&grant_type="${grantTypeAuthorization}"`,
     headers: {
       accept: "application/json"
     }
   }).then(response => {
     const accessToken = response.data.access_token;
     const refreshToken = response.data.refresh_token;
-    const expiredAt = response.data.expired_at;
-    const athlete = response.data.athlete;
-    const athleteId = athlete.id;
-    const athleteName = `${athlete.firstname} ${athlete.lastname}`;
-    console.log("------------------------------------------");
-    console.log(response.data.athlete);
-    console.log("------------------------------------------");
+    const expiresAt = response.data.expires_at;
+    const athleteId = response.data.athlete.id;
     const state = response.data.state;
     // redirect the user to the welcome page, along with the access token
     res.redirect(
-      `/welcome.html?access_token=${accessToken}&athlete_id=${athleteId}&athlete=${athleteName}`
+      `/welcome.html?access_token=${accessToken}&athlete=${athleteId}&refresh_token=${refreshToken}&expires_at=${expiresAt}`
     );
   });
 });
