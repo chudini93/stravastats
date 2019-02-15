@@ -20,11 +20,9 @@ app.use(function(req, res, next) {
   next();
 });
 
-// store in memory
-var authenticated = false;
-
 app.get("/oauth/redirect", (req, res) => {
   const requestToken = req.query.code;
+  console.log("GET oauth/redirect");
   axios({
     method: "POST",
     url: `https://www.strava.com/oauth/token?client_id=${clientID}&client_secret=${clientSecret}&code=${requestToken}&grant_type="${grantTypeAuthorization}"`,
