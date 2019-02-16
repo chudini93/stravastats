@@ -236,12 +236,16 @@ async function mapToSummaryInfo(header, activities) {
   var elapsedTime = 0;
   var rides = 0;
   var movingTime = 0;
+  var maxSpeed = 0;
 
   activities.forEach(element => {
     distance += element.distance;
     elapsedTime += element.elapsed_time;
     movingTime += element.moving_time;
     rides += 1;
+    if (element.max_speed > maxSpeed) {
+      maxSpeed = element.max_speed;
+    }
   });
 
   var output = {
@@ -249,7 +253,10 @@ async function mapToSummaryInfo(header, activities) {
     rides: rides,
     distance: convertMetersToKilometers(distance, UNIT),
     elapsedTime: convertSecondsToString(elapsedTime, 1),
-    movingTime: convertSecondsToString(movingTime, 1)
+    movingTime: convertSecondsToString(movingTime, 1),
+    avgSpeed: calculateAverageSpeed(movingTime, distance, SPEED_UNIT),
+    elapsedAvgSpeed: calculateAverageSpeed(elapsedTime, distance, SPEED_UNIT),
+    maxSpeed: convertMetersPerSecondToKilometerPerHour(maxSpeed, SPEED_UNIT)
   };
 
   console.log(`"${header}: `, output);
