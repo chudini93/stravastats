@@ -1,6 +1,7 @@
 const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 // This is the client ID and client secret that you obtained
 // while registering the application
@@ -18,7 +19,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get("/oauth/redirect", (req, res) => {
+app.get("/oauth/redirect", async (req, res) => {
   const requestToken = req.query.code;
   console.log("GET oauth/redirect, request token=", requestToken);
 
@@ -28,13 +29,14 @@ app.get("/oauth/redirect", (req, res) => {
     grant_type: GRANT_TYPE_AUTHORIZATION,
     code: requestToken
   };
-  var response = request(
+  var response = await request(
     "POST",
     "https://www.strava.com/oauth/token",
     false,
     requestBody
   );
 
+  console.log("response: ", response);
   const accessToken = response.access_token;
   const refreshToken = response.refresh_token;
   const expiresAt = response.expires_at;
