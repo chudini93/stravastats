@@ -1,8 +1,6 @@
 const CLIENT_ID = "32572";
 const CLIENT_SECRET = "5e338c16d1f1a398f046296384bf06812073d390";
 const GRANT_TYPE_REFRESH = "refresh_token";
-const UNIT = "km";
-const SPEED_UNIT = "km/h";
 
 var token = {
   accessToken: "",
@@ -108,16 +106,6 @@ async function validateToken(tkn) {
   }
 }
 
-function getParameterByName(name, url) {
-  if (!url) url = window.location.href;
-  name = name.replace(/[\[\]]/g, "\\$&");
-  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-    results = regex.exec(url);
-  if (!results) return null;
-  if (!results[2]) return "";
-  return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
 async function loadAuthenticatedAthlete() {
   var athlete = await request("GET", "https://www.strava.com/api/v3/athlete");
   console.log("athlete: ", athlete);
@@ -129,17 +117,19 @@ async function loadAuthenticatedAthlete() {
 }
 
 async function loadAthleteStats(id) {
+  var allTimeInfo = getAllTimeInfo(id);
+  var currentYearInfo = getCurrentYearInfo();
+  var previousYearInfo = getPreviousYearInfo();
+  var last3MonthsInfo = get3MonthsInfo();
+  var thisMonthInfo = getThisMonthSummaryInfo();
+}
+
+function getAllTimeInfo(id) {
   var athleteStats = await request(
     "GET",
     `https://www.strava.com/api/v3/athletes/${id}/stats`
   );
   console.log("athleteStats: ", athleteStats);
-
-  var biggestDistance = convertMetersToKilometers(
-    athleteStats.biggest_ride_distance,
-    UNIT
-  );
-  console.log("biggestDistance: ", biggestDistance);
 
   var allTimeInfo = {
     header: "All time",
@@ -156,223 +146,13 @@ async function loadAthleteStats(id) {
     movingTime: convertSecondsToString(
       athleteStats.all_ride_totals.moving_time,
       1
+    ),
+    biggestDistance: convertMetersToKilometers(
+      athleteStats.biggest_ride_distance,
+      UNIT
     )
   };
   console.log("allTime: ", allTimeInfo);
 
-  var currentYear = new Date().getFullYear();
-  var currentMonth = new Date().getMonth() + 1;
-  var currentDay = new Date().getDay();
-
-  var from = convertDateToCurrentTimestamp(new Date(currentYear, 1, 1));
-  var until = convertDateToCurrentTimestamp(new Date(currentYear, 12, 31));
-  var currentYearActivities = await request(
-    "GET",
-    `https://www.strava.com/api/v3/athlete/activities?after=${from}&before=${until}`
-  );
-  var currentYearInfo = mapToSummaryInfo(currentYear, currentYearActivities);
-
-  var from = convertDateToCurrentTimestamp(new Date(currentYear - 1, 1, 1));
-  var until = convertDateToCurrentTimestamp(new Date(currentYear - 1, 12, 31));
-  var previousYearActivities = await request(
-    "GET",
-    `https://www.strava.com/api/v3/athlete/activities?after=${from}&before=${until}`
-  );
-  var previousYearInfo = mapToSummaryInfo(
-    currentYear - 1,
-    previousYearActivities
-  );
-
-  var from = convertDateToCurrentTimestamp(
-    new Date(currentYear, currentMonth - 1, 1)
-  );
-  var lastDay = 30;
-  if (currentMonth == 2) {
-    lastDay = currentYear % 2 == 1 ? 28 : 29;
-  } else {
-    lastDay = currentMonth % 2 == 1 ? 31 : 30;
-  }
-
-  if (currentDay < lastDay) {
-    lastDay = currentDay;
-  }
-
-  from = convertDateToCurrentTimestamp(
-    new Date(currentYear, currentMonth - 1, 1)
-  );
-  var until = convertDateToCurrentTimestamp(new Date());
-  var lastMonthActivities = await request(
-    "GET",
-    `https://www.strava.com/api/v3/athlete/activities?after=${from}&before=${until}`
-  );
-  var lastMonthInfo = mapToSummaryInfo(
-    "This month - " + getMonthName(currentMonth - 1),
-    lastMonthActivities
-  );
-}
-
-function getMonthName(monthIndex) {
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ];
-
-  var output = monthNames[monthIndex];
-  return output;
-}
-
-async function mapToSummaryInfo(header, activities) {
-  var distance = 0;
-  var elapsedTime = 0;
-  var rides = 0;
-  var movingTime = 0;
-  var maxSpeed = 0;
-
-  activities.forEach(element => {
-    distance += element.distance;
-    elapsedTime += element.elapsed_time;
-    movingTime += element.moving_time;
-    rides += 1;
-    if (element.max_speed > maxSpeed) {
-      maxSpeed = element.max_speed;
-    }
-  });
-
-  var output = {
-    header: header,
-    rides: rides,
-    distance: convertMetersToKilometers(distance, UNIT),
-    elapsedTime: convertSecondsToString(elapsedTime, 1),
-    movingTime: convertSecondsToString(movingTime, 1),
-    avgSpeed: calculateAverageSpeed(movingTime, distance, SPEED_UNIT),
-    elapsedAvgSpeed: calculateAverageSpeed(elapsedTime, distance, SPEED_UNIT),
-    maxSpeed: convertMetersPerSecondToKilometerPerHour(maxSpeed, SPEED_UNIT)
-  };
-
-  console.log(`"${header}: `, output);
-  return output;
-}
-
-async function loadActivitiesForAuthenticatedAthlete() {
-  var activities = await request(
-    "GET",
-    `https://www.strava.com/api/v3/athlete/activities`
-  );
-
-  var activityRecords = [];
-
-  activities.forEach(element => {
-    var record = {
-      id: element.id,
-      name: element.name,
-      date: convertDateToString(element.start_date_local),
-      movingTime: convertSecondsToString(element.moving_time),
-      elapsedTime: convertSecondsToString(element.elapsed_time),
-      distance: convertMetersToKilometers(element.distance, UNIT),
-      avgSpeed: convertMetersPerSecondToKilometerPerHour(
-        element.average_speed,
-        SPEED_UNIT
-      ),
-      elapsedAvgSpeed: calculateAverageSpeed(
-        element.elapsed_time,
-        element.distance,
-        SPEED_UNIT
-      ),
-      maxSpeed: convertMetersPerSecondToKilometerPerHour(
-        element.max_speed,
-        SPEED_UNIT
-      ),
-      isCommute: element.commute,
-      totalElevationGain: element.total_elevation_gain
-    };
-
-    activityRecords.push(record);
-  });
-
-  console.log("activities: ", activityRecords);
-}
-
-// 585 seconds = 9mins 45secs
-// Formats: 0 => 9:45
-//          1 => 0h 9m
-function convertSecondsToString(epoc, format = 0) {
-  var output = "";
-
-  var hours = Math.floor(epoc / 3600);
-  var minutes = Math.floor((epoc - hours * 3600) / 60);
-  var seconds = epoc % 60;
-
-  switch (format) {
-    case 0:
-      output = minutes + ":" + seconds;
-      break;
-    case 1:
-      output = `${hours}h ${minutes}m`;
-      break;
-    default:
-      break;
-  }
-
-  return output;
-}
-
-// 1 m/s = 3.6 km/h => 3.6
-function convertMetersPerSecondToKilometerPerHour(
-  meterPerSecond,
-  speedUnit = null
-) {
-  var output = (meterPerSecond * 3.6).toFixed(2);
-  if (speedUnit) output = output + " " + speedUnit;
-
-  return output;
-}
-
-function calculateAverageSpeed(
-  timeInSeconds,
-  distanceInMeters,
-  speedUnit = null
-) {
-  var time = timeInSeconds / 60;
-  var distance = distanceInMeters / 1000;
-  var output = ((60 / time) * distance).toFixed(2);
-
-  if (speedUnit) output = output + " " + speedUnit;
-
-  return output;
-}
-
-function convertMetersToKilometers(meters, unit = null) {
-  var output = (meters / 1000).toFixed(2);
-  if (unit) output = output + " " + unit;
-
-  return output;
-}
-
-// DD/MM/YYYY 17:55
-function convertDateToString(stringDate) {
-  var date = new Date(stringDate);
-  var output = date.toLocaleString(undefined, {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false
-  });
-
-  return output;
-}
-
-function convertDateToCurrentTimestamp(date) {
-  return Math.floor(date / 1000);
+  return allTimeInfo;
 }
