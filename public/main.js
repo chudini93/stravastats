@@ -124,7 +124,7 @@ async function loadAthleteStats(id) {
   var thisMonthInfo = getThisMonthSummaryInfo();
 }
 
-function getAllTimeInfo(id) {
+async function getAllTimeInfo(id) {
   var athleteStats = await request(
     "GET",
     `https://www.strava.com/api/v3/athletes/${id}/stats`
