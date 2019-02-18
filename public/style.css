@@ -1,0 +1,14 @@
+body {
+  margin: 0px;
+  background-color: #eaf0f4;
+}
+.nav-header {
+  height: 60px;
+  background-color: #ffffff;
+}
+.nav-header .app-title {
+  padding-left: 15px;
+  color: #94e092;
+  font-size: 32px;
+  font-weight: bold;
+}
