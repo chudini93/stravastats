@@ -10,6 +10,7 @@ var token = {
 };
 
 var athleteId = "";
+var isSynced = false;
 
 class App {
   async init() {
