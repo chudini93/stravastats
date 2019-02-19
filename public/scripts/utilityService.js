@@ -89,6 +89,9 @@ function convertMetersToKilometers(meters, unit = null) {
 
 // DD/MM/YYYY 17:55
 function convertDateToString(stringDate) {
+  if (!stringDate) {
+    stringDate = new Date();
+  }
   var date = new Date(stringDate);
   var output = date.toLocaleString(undefined, {
     day: "numeric",

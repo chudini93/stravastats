@@ -1,35 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Hello</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>Hello</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
+  <body>
+    <div class="main-container">
+      <header>
+        <div class="container">
+          <div class="box1">
+            <span class="app-name">STRAVA - ANALYZER</span>
+          </div>
+          <div class="box2">
+            <div class="reload-section">
+              <span
+                id="reload"
+                title="Reload data"
+                class="fa fa-repeat hidden"
+                onclick="loadData(true, true)"
+              ></span>
+              <span id="sync-loader" class="loader hidden"></span>
+            </div>
+            <div class="sync-info">
+              <span class="sync-title"
+                >SYNC <span id="isSynced" class="red">OFF</span></span
+              >
+              <span id="syncdate" class="sync-date green"></span>
+            </div>
 
-<body>
-  <div class="nav-header">
-    <div class="container">
-      <div class="box1">
-        <span class="app-title">STRAVA - ANALYZER</span>
-      </div>
-      <div class="box2">
-        <span class="sync-title"><span class="fa fa-repeat"></span> SYNC <span id="isSynced" class="red">OFF</span></span>
-        <span class="sync-date">Janusz</span>
-        <span id="fullname" class="full-name">Name</span>
-      </div>
-      <div class="box3">
-        <img id="avatar" class="avatar" height="45" width="45" />
-      </div>
+            <span id="fullname" class="full-name">-</span>
+          </div>
+          <div class="box3">
+            <img id="avatar" class="avatar" height="45" width="45" />
+          </div>
+        </div>
+      </header>
+      <summary></summary>
+      <main-content> </main-content>
+      <footer>
+        <span class="author"> Bartłomiej Marek</span>
+      </footer>
     </div>
-  </div>
-  <script type="text/javascript" src="/constDictionary.js"></script>
-  <script type="text/javascript" src="/utilityService.js"></script>
-  <script type="text/javascript" src="/activityService.js"></script>
-  <script type="text/javascript" src="/main.js"></script>
-</body>
-
+    <script type="text/javascript" src="./scripts/constDictionary.js"></script>
+    <script type="text/javascript" src="./scripts/utilityService.js"></script>
+    <script type="text/javascript" src="./scripts/activityService.js"></script>
+    <script type="text/javascript" src="./scripts/main.js"></script>
+  </body>
 </html>

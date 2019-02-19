@@ -10,17 +10,18 @@ var token = {
 };
 
 var athleteId = "";
-var isSynced = false;
+var isTestMode = true;
 
 class App {
   async init() {
     try {
       let query = window.location.search.substring(1);
       await mapTokensFromUrl(window.location.href, token);
-      await validateToken(token);
-      loadAuthenticatedAthlete();
-      loadAthleteStats(athleteId);
-      loadActivitiesForAuthenticatedAthlete();
+
+      if (!isTestMode) {
+        await validateToken(token);
+      }
+      loadData(false);
       this.render();
     } catch (err) {
       alert(`Error: ${err.message}`);
@@ -31,6 +32,33 @@ class App {
 
 let app = new App();
 app.init();
+
+async function loadData(showLoader = true, manualReload = false) {
+  if (showLoader) {
+    document.getElementById("reload").classList.add("hidden");
+    document.getElementById("sync-loader").classList.remove("hidden");
+  }
+
+  if (!isTestMode || manualReload) {
+    // loadAthleteStats(athleteId);
+    // loadActivitiesForAuthenticatedAthlete();
+  }
+
+  if (manualReload) {
+    await validateToken(token);
+  }
+
+  if (manualReload) {
+    loadAuthenticatedAthlete();
+  } else {
+    loadAuthenticatedAthlete(isTestMode);
+  }
+
+  setTimeout(() => {
+    document.getElementById("reload").classList.remove("hidden");
+    document.getElementById("sync-loader").classList.add("hidden");
+  }, 200);
+}
 
 function request(method, url, bearer = true, data = null) {
   return new Promise((resolve, reject) => {
@@ -107,14 +135,30 @@ async function validateToken(tkn) {
   }
 }
 
-async function loadAuthenticatedAthlete() {
-  var athlete = await request("GET", "https://www.strava.com/api/v3/athlete");
+async function loadAuthenticatedAthlete(testMode = false) {
+  var athlete = null;
+  var linkToProfilePicture =
+    "https://caroda.io/wp-content/themes/thesaas/assets/img/placeholder-avatar.jpg";
+  var fullName = "-";
+
+  if (!testMode) {
+    athlete = await request("GET", "https://www.strava.com/api/v3/athlete");
+    linkToProfilePicture = athlete.profile;
+    fullName = `${athlete.firstname} ${athlete.lastname}`;
+  }
+
+  if (athlete) {
+    document.getElementById("isSynced").innerHTML = "ON";
+    document.getElementById("isSynced").className = "green";
+    document.getElementById("syncdate").innerHTML = convertDateToString();
+  } else {
+    document.getElementById("isSynced").innerHTML = "OFF";
+    document.getElementById("isSynced").className = "red";
+  }
   console.log("athlete: ", athlete);
 
-  document.getElementById("avatar").setAttribute("src", athlete.profile);
-  document.getElementById("fullname").innerHTML = `${athlete.firstname} ${
-    athlete.lastname
-  }`;
+  document.getElementById("avatar").setAttribute("src", linkToProfilePicture);
+  document.getElementById("fullname").innerHTML = fullName;
 }
 
 async function loadAthleteStats(id) {
