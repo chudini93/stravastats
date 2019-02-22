@@ -1,0 +1,86 @@
+@media only screen and (min-width: 1280px) {
+  @maxResolution: 1280px;
+  @lessResolution: 1248px;
+  @summaryRowHeight: 125px;
+
+  .container {
+    width: @maxResolution;
+  }
+
+  summary {
+    width: @lessResolution;
+  }
+
+  main-content {
+    width: @lessResolution;
+  }
+
+  .main-container {
+    grid-template-rows: auto 125px 1fr auto;
+    footer {
+      height: 45px;
+    }
+  }
+
+  summary {
+    grid-template-columns: 30px auto 30px;
+
+    .item {
+      border-left-width: 5px;
+      padding-left: 10px;
+      margin-right: 20px;
+
+      span,
+      label {
+        font-size: 13px;
+      }
+      .title {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+
+      .headers {
+        padding-right: 15px;
+      }
+    }
+
+    .small {
+      font-size: 12px !important;
+    }
+
+    .border-left-2-yellow {
+      padding: 0 0 0 15px;
+    }
+  }
+
+  header,
+  footer {
+    grid-template-columns: auto @maxResolution auto;
+  }
+
+  header {
+    height: 60px;
+    .container {
+      .box1 {
+        padding-left: 15px;
+        .app-name {
+          font-size: 26px;
+        }
+      }
+
+      .sync-title {
+        font-size: 13px;
+      }
+      .sync-date {
+        font-size: 10px;
+      }
+      .full-name {
+        font-size: 16px;
+      }
+    }
+
+    .box3 {
+      padding-right: 15px;
+    }
+  }
+}

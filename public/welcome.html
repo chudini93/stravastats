@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Hello</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./styles/main.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -43,7 +43,87 @@
           </div>
         </div>
       </header>
-      <summary></summary>
+      <summary>
+        <container>
+          <item id="currentMonth" class="item extended">
+            <label class="title col5">Current month - February</label>
+            <column class="headers">
+              <label class="distance">Distance: </label>
+              <label class="time">Time:</label>
+              <label class="rides">Rides:</label>
+            </column>
+            <column>
+              <span>50km</span>
+              <span>2h 35m</span>
+              <span>19</span>
+            </column>
+            <column class="border-left-2-yellow">
+              <span>Avg. Speed:</span>
+              <span>Max Speed:</span>
+              <span>TAvg Speed:</span>
+            </column>
+            <column>
+              <span>23 km/h</span>
+              <span>57 km/h</span>
+              <span>19 km/h</span>
+            </column>
+            <column>
+              <span class="red small">-1 km/h</span>
+              <span class="green small">+5 km/h</span>
+              <span class="red small">-2 km/h</span>
+            </column>
+          </item>
+          <item id="lastThreeMonths" class="item">
+            <label class="title col4">Last 3 months - Nov - Jan</label>
+            <column class="headers">
+              <label class="distance">Distance: </label>
+              <label class="time">Time:</label>
+              <label class="rides">Rides:</label>
+            </column>
+            <column>
+              <span>150km</span>
+              <span>4h 35m</span>
+              <span>48</span>
+            </column>
+            <column class="border-left-2-yellow">
+              <span>Avg. Speed:</span>
+              <span>Max Speed:</span>
+              <span>TAvg Speed:</span>
+            </column>
+            <column>
+              <span>24 km/h</span>
+              <span>52 km/h</span>
+              <span>21 km/h</span>
+            </column>
+          </item>
+          <item id="currentYear" class="item">
+            <label class="title col2">2019</label>
+            <column class="headers">
+              <label class="distance">Distance: </label>
+              <label class="time">Time:</label>
+              <label class="rides">Rides:</label>
+            </column>
+            <column>
+              <span>150km</span>
+              <span>6h 35m</span>
+              <span>79</span>
+            </column>
+          </item>
+          <item id="allTime" class="item">
+            <label class="title col2">All time</label>
+            <column class="headers">
+              <label class="distance">Distance: </label>
+              <label class="time">Time:</label>
+              <label class="rides">Rides:</label>
+            </column>
+            <column>
+              <span>1250 (28km)</span>
+              <span>14h 35m</span>
+              <span>158</span>
+            </column>
+          </item>
+        </container>
+      </summary>
       <main-content> </main-content>
       <footer>
         <span class="author"> Bartłomiej Marek</span>

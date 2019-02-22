@@ -1,0 +1,338 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:300,400,700&subset=latin-ext");
+@import url("resolutions/768-1024.css");
+.green {
+  color: #94e092;
+}
+.red {
+  color: #c56876;
+}
+body {
+  font-family: "Lato";
+  margin: 0px;
+  background-color: #eaf0f4;
+}
+.container {
+  grid-column-start: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  grid-gap: 10px;
+  align-items: center;
+}
+summary {
+  display: grid;
+  margin: 0 auto;
+  grid-template-columns: repeat(1fr);
+  grid-gap: 10px;
+  align-items: center;
+  background-color: #ffffff;
+  box-shadow: 1px 2px 6px #00000038;
+}
+main-content {
+  display: grid;
+  margin: 0 auto;
+  grid-template-columns: repeat(1fr);
+  grid-gap: 10px;
+  align-items: center;
+  background-color: #ffffff;
+  box-shadow: 1px 2px 6px #00000038;
+}
+.main-container {
+  display: grid;
+  min-height: 100%;
+  grid-row-gap: 12px;
+  grid-template-columns: 100%;
+  height: 100vh;
+  grid-template-areas: "header" "summary" "main" "footer";
+}
+.main-container .content {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+.main-container summary {
+  display: grid;
+}
+.main-container summary container {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: auto auto max-content max-content;
+}
+.main-container summary container item {
+  display: grid;
+}
+.main-container summary container item column {
+  display: grid;
+  max-width: fit-content;
+  grid-auto-rows: auto;
+  text-align: right;
+}
+.main-container summary container .item {
+  border-left-style: solid;
+}
+.main-container summary container .item span,
+.main-container summary container .item label {
+  font-weight: 300;
+}
+.main-container summary container .item .title {
+  font-weight: bold;
+  color: #b5b5b5;
+}
+.main-container summary container .border-left-2-yellow {
+  border-left: 2px solid #ffe88c;
+}
+.main-container summary container .col2 {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+.main-container summary container .col3 {
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+.main-container summary container .col4 {
+  grid-column-start: 1;
+  grid-column-end: 5;
+}
+.main-container summary container .col5 {
+  grid-column-start: 1;
+  grid-column-end: 6;
+}
+.main-container summary container .small {
+  font-weight: 500 !important;
+}
+.main-container summary container #currentYear {
+  border-left-color: #94e092;
+}
+.main-container summary container item#allTime {
+  border-left-color: #7cd8eb;
+}
+.main-container summary container #lastThreeMonths,
+.main-container summary container #currentMonth {
+  border-left-color: #ffe88c;
+}
+.main-container footer {
+  align-items: center;
+  box-shadow: 0px -1px 2px lightgrey;
+}
+.main-container footer .author {
+  grid-column-start: 2;
+}
+.main-container footer .author:before {
+  content: "\00a9";
+}
+header,
+footer {
+  display: grid;
+  background-color: #ffffff;
+}
+header {
+  box-shadow: 0px 2px 3px #00000038;
+}
+header .container .box1 .app-name {
+  color: #94e092;
+  font-weight: bold;
+  font-family: "Lato";
+  letter-spacing: -1px;
+}
+header .container .box2 {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr auto;
+  justify-items: end;
+}
+header .container .box2 .reload-section {
+  grid-row-start: 1;
+  grid-row-end: 3;
+  padding: 3px;
+}
+header .container .box2 .reload-section #reload {
+  color: #b5b5b5;
+  cursor: pointer;
+  font-size: 200%;
+  transition: color 0.3s;
+}
+header .container .box2 .reload-section #reload:hover {
+  color: #94e092;
+  cursor: pointer;
+}
+header .container .box2 .sync-title {
+  font-weight: bold;
+  color: #b5b5b5;
+}
+header .container .box2 .full-name {
+  grid-column: 2;
+  float: right;
+  text-transform: uppercase;
+  font-weight: 400;
+  color: #b5b5b5;
+  letter-spacing: 0px;
+}
+header .container .box3 .avatar {
+  border-radius: 50%;
+  border: 1px solid #94e092;
+  box-shadow: 2px 3px #00000054;
+}
+.transparent {
+  opacity: 0.2;
+}
+.hidden {
+  visibility: hidden;
+}
+.loader {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-left: -34px;
+}
+.loader:after {
+  content: " ";
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin: 1px;
+  border-radius: 50%;
+  border: 5px solid #94e092;
+  border-color: #94e092 transparent #94e092 transparent;
+  animation: loader 1.2s linear infinite;
+}
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@media only screen and (min-width: 1280px) {
+  .container {
+    width: 1280px;
+  }
+  summary {
+    width: 1248px;
+  }
+  main-content {
+    width: 1248px;
+  }
+  .main-container {
+    grid-template-rows: auto 125px 1fr auto;
+  }
+  .main-container footer {
+    height: 45px;
+  }
+  summary {
+    grid-template-columns: 30px auto 30px;
+  }
+  summary .item {
+    border-left-width: 5px;
+    padding-left: 10px;
+    margin-right: 20px;
+  }
+  summary .item span,
+  summary .item label {
+    font-size: 13px;
+  }
+  summary .item .title {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  summary .item .headers {
+    padding-right: 15px;
+  }
+  summary .small {
+    font-size: 12px !important;
+  }
+  summary .border-left-2-yellow {
+    padding: 0 0 0 15px;
+  }
+  header,
+  footer {
+    grid-template-columns: auto 1280px auto;
+  }
+  header {
+    height: 60px;
+  }
+  header .container .box1 {
+    padding-left: 15px;
+  }
+  header .container .box1 .app-name {
+    font-size: 26px;
+  }
+  header .container .sync-title {
+    font-size: 13px;
+  }
+  header .container .sync-date {
+    font-size: 10px;
+  }
+  header .container .full-name {
+    font-size: 16px;
+  }
+  header .box3 {
+    padding-right: 15px;
+  }
+}
+@media only screen and (min-width: 1024px) and (max-width: 1260px) {
+  .container {
+    width: 1024px;
+  }
+  summary {
+    width: 1012px;
+  }
+  main-content {
+    width: 1012px;
+  }
+  .main-container {
+    grid-template-rows: auto 125px 1fr auto;
+  }
+  .main-container footer {
+    height: 45px;
+  }
+  summary {
+    grid-template-columns: 30px auto 30px;
+  }
+  summary .item {
+    border-left-width: 5px;
+    padding-left: 10px;
+    margin-right: 20px;
+  }
+  summary .item span,
+  summary .item label {
+    font-size: 13px;
+  }
+  summary .item .title {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+  summary .item .headers {
+    padding-right: 15px;
+  }
+  summary .small {
+    font-size: 12px !important;
+  }
+  summary .border-left-2-yellow {
+    padding: 0 0 0 15px;
+  }
+  header,
+  footer {
+    grid-template-columns: auto 1024px auto;
+  }
+  header {
+    height: 60px;
+  }
+  header .container .box1 {
+    padding-left: 15px;
+  }
+  header .container .box1 .app-name {
+    font-size: 26px;
+  }
+  header .container .sync-title {
+    font-size: 13px;
+  }
+  header .container .sync-date {
+    font-size: 10px;
+  }
+  header .container .full-name {
+    font-size: 16px;
+  }
+  header .box3 {
+    padding-right: 15px;
+  }
+}

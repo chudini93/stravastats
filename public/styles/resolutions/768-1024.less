@@ -1,0 +1,87 @@
+//and (min-width: 768px)
+@media only screen and (max-width: 1024px) {
+  @maxResolution: 756px;
+  @lessResolution: 768px;
+  @summaryRowHeight: 125px;
+
+  .container {
+    width: @maxResolution;
+  }
+
+  summary {
+    width: @lessResolution;
+  }
+
+  main-content {
+    width: @lessResolution;
+  }
+
+  .main-container {
+    grid-template-rows: auto 95px 1fr auto;
+    footer {
+      height: 45px;
+    }
+  }
+
+  summary {
+    grid-template-columns: 5px auto 5px;
+
+    .item {
+      border-left-width: 3px;
+      padding-left: 5px;
+      margin-right: 10px;
+
+      span,
+      label {
+        font-size: 11px;
+      }
+      .title {
+        font-size: 13px;
+        margin-bottom: 5px;
+      }
+
+      .headers {
+        padding-right: 5px;
+      }
+    }
+
+    .small {
+      font-size: 10px !important;
+    }
+
+    .border-left-2-yellow {
+      padding: 0 0 0 5px;
+    }
+  }
+
+  header,
+  footer {
+    grid-template-columns: auto @maxResolution auto;
+  }
+
+  header {
+    height: 60px;
+    .container {
+      .box1 {
+        padding-left: 5px;
+        .app-name {
+          font-size: 22px;
+        }
+      }
+
+      .sync-title {
+        font-size: 12px;
+      }
+      .sync-date {
+        font-size: 10px;
+      }
+      .full-name {
+        font-size: 15px;
+      }
+    }
+
+    .box3 {
+      padding-right: 5px;
+    }
+  }
+}

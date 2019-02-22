@@ -1,0 +1,67 @@
+@media only screen and (max-width: 1024px) {
+  .container {
+    width: 756px;
+  }
+  summary {
+    width: 768px;
+  }
+  main-content {
+    width: 768px;
+  }
+  .main-container {
+    grid-template-rows: auto 95px 1fr auto;
+  }
+  .main-container footer {
+    height: 45px;
+  }
+  summary {
+    grid-template-columns: 5px auto 5px;
+  }
+  summary .item {
+    border-left-width: 3px;
+    padding-left: 5px;
+    margin-right: 10px;
+  }
+  summary .item span,
+  summary .item label {
+    font-size: 11px;
+  }
+  summary .item .title {
+    font-size: 13px;
+    margin-bottom: 5px;
+  }
+  summary .item .headers {
+    padding-right: 5px;
+  }
+  summary .small {
+    font-size: 10px !important;
+  }
+  summary .border-left-2-yellow {
+    padding: 0 0 0 5px;
+  }
+  header,
+  footer {
+    grid-template-columns: auto 756px auto;
+  }
+  header {
+    height: 60px;
+  }
+  header .container .box1 {
+    padding-left: 5px;
+  }
+  header .container .box1 .app-name {
+    font-size: 22px;
+  }
+  header .container .sync-title {
+    font-size: 12px;
+  }
+  header .container .sync-date {
+    font-size: 10px;
+  }
+  header .container .full-name {
+    font-size: 15px;
+  }
+  header .box3 {
+    padding-right: 5px;
+  }
+}
