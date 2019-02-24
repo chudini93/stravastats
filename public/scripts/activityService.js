@@ -40,7 +40,7 @@ async function loadActivitiesForAuthenticatedAthlete() {
   console.log("activities: ", activityRecords);
 }
 
-async function getThisMonthSummaryInfo() {
+async function getCurrentMonthSummaryInfo() {
   var from = convertDateToCurrentTimestamp(
     new Date(new Date().setMonth(new Date().getMonth())).setDate(1)
   );
@@ -82,8 +82,11 @@ async function mapToSummaryInfo(header, activities) {
     elapsedTime: convertSecondsToString(elapsedTime, 1),
     movingTime: convertSecondsToString(movingTime, 1),
     avgSpeed: calculateAverageSpeed(movingTime, distance, SPEED_UNIT),
+    avgSpeedValue: calculateAverageSpeed(movingTime, distance),
     elapsedAvgSpeed: calculateAverageSpeed(elapsedTime, distance, SPEED_UNIT),
-    maxSpeed: convertMetersPerSecondToKilometerPerHour(maxSpeed, SPEED_UNIT)
+    elapsedAvgSpeedValue: calculateAverageSpeed(elapsedTime, distance),
+    maxSpeed: convertMetersPerSecondToKilometerPerHour(maxSpeed, SPEED_UNIT),
+    maxSpeedValue: convertMetersPerSecondToKilometerPerHour(maxSpeed)
   };
 
   console.log(`"${header}: `, output);

@@ -34,18 +34,23 @@ let app = new App();
 app.init();
 
 async function loadData(showLoader = true, manualReload = false) {
-  if (showLoader) {
-    document.getElementById("reload").classList.add("hidden");
-    document.getElementById("sync-loader").classList.remove("hidden");
-  }
+  var reloadButton = document.getElementById("reload");
+  var loader = document
+    .getElementsByTagName("header")[0]
+    .getElementsByTagName("loader")[0];
 
-  if (!isTestMode || manualReload) {
-    // loadAthleteStats(athleteId);
-    // loadActivitiesForAuthenticatedAthlete();
+  if (showLoader) {
+    DOM_setVisibility(reloadButton, false);
+    DOM_setVisibility(loader, true);
   }
 
   if (manualReload) {
     await validateToken(token);
+  }
+
+  if (!isTestMode || manualReload) {
+    loadAthleteStats(athleteId);
+    // loadActivitiesForAuthenticatedAthlete();
   }
 
   if (manualReload) {
@@ -55,8 +60,8 @@ async function loadData(showLoader = true, manualReload = false) {
   }
 
   setTimeout(() => {
-    document.getElementById("reload").classList.remove("hidden");
-    document.getElementById("sync-loader").classList.add("hidden");
+    DOM_setVisibility(reloadButton, true);
+    DOM_setVisibility(loader, false);
   }, 200);
 }
 
@@ -162,11 +167,32 @@ async function loadAuthenticatedAthlete(testMode = false) {
 }
 
 async function loadAthleteStats(id) {
-  var allTimeInfo = getAllTimeInfo(id);
-  var currentYearInfo = getCurrentYearInfo();
-  var previousYearInfo = getPreviousYearInfo();
-  var last3MonthsInfo = get3MonthsInfo();
-  var thisMonthInfo = getThisMonthSummaryInfo();
+  var loader = document
+    .getElementsByTagName("summary")[0]
+    .getElementsByTagName("loader")[0];
+
+  DOM_setVisibility(loader, true);
+
+  var allTimeInfo = await getAllTimeInfo(id);
+  DOM_updateSummaryItem(allTimeInfo, "allTime");
+
+  var currentYearInfo = await getCurrentYearInfo();
+  DOM_updateSummaryItem(currentYearInfo, "currentYear");
+  // var previousYearInfo = getPreviousYearInfo();
+  var last3MonthsInfo = await get3MonthsInfo();
+  DOM_updateSummaryItem(last3MonthsInfo, "lastThreeMonths");
+
+  var currentMonthInfo = await getCurrentMonthSummaryInfo();
+  DOM_updateSummaryItem(currentMonthInfo, "currentMonth");
+
+  DOM_updateDifference(currentMonthInfo, last3MonthsInfo);
+
+  DOM_setVisibility(loader, false);
+}
+
+function DOM_setVisibility(dom, isVisible = true) {
+  var visibility = isVisible ? "visible" : "collapse";
+  dom.style.visibility = visibility;
 }
 
 async function getAllTimeInfo(id) {
@@ -200,4 +226,87 @@ async function getAllTimeInfo(id) {
   console.log("allTime: ", allTimeInfo);
 
   return allTimeInfo;
+}
+
+function DOM_updateSummaryItem(data, id) {
+  // header: header,
+  // rides: rides,
+  // distance: convertMetersToKilometers(distance, UNIT),
+  // elapsedTime: convertSecondsToString(elapsedTime, 1),
+  // movingTime: convertSecondsToString(movingTime, 1),
+  // avgSpeed: calculateAverageSpeed(movingTime, distance, SPEED_UNIT),
+  // avgSpeedValue: calculateAverageSpeed(movingTime, distance),
+  // elapsedAvgSpeed: calculateAverageSpeed(elapsedTime, distance, SPEED_UNIT),
+  // elapsedAvgSpeedValue: calculateAverageSpeed(elapsedTime, distance),
+  // maxSpeed: convertMetersPerSecondToKilometerPerHour(maxSpeed, SPEED_UNIT),
+  // maxSpeedValue: convertMetersPerSecondToKilometerPerHour(maxSpeed)header: header,
+  // rides: rides,
+  // distance: convertMetersToKilometers(distance, UNIT),
+  // elapsedTime: convertSecondsToString(elapsedTime, 1),
+  // movingTime: convertSecondsToString(movingTime, 1),
+  // avgSpeed: calculateAverageSpeed(movingTime, distance, SPEED_UNIT),
+  // avgSpeedValue: calculateAverageSpeed(movingTime, distance),
+  // elapsedAvgSpeed: calculateAverageSpeed(elapsedTime, distance, SPEED_UNIT),
+  // elapsedAvgSpeedValue: calculateAverageSpeed(elapsedTime, distance),
+  // maxSpeed: convertMetersPerSecondToKilometerPerHour(maxSpeed, SPEED_UNIT),
+  // maxSpeedValue: convertMetersPerSecondToKilometerPerHour(maxSpeed)
+
+  var item = document.getElementById(id);
+  var header = item.getElementsByClassName("title")[0];
+  var values = item
+    .getElementsByClassName("values")[0]
+    .getElementsByTagName("span");
+
+  var avgValueDOM = item.getElementsByClassName("avg-values");
+
+  header.innerHTML = data.header;
+
+  values[0].innerHTML = data.distance;
+  values[1].innerHTML = data.movingTime;
+  values[2].innerHTML = data.rides;
+
+  if (avgValueDOM.length > 0) {
+    var avgValues = avgValueDOM[0].getElementsByTagName("span");
+    avgValues[0].innerHTML = data.avgSpeed;
+    avgValues[1].innerHTML = data.maxSpeed;
+    avgValues[2].innerHTML = data.elapsedAvgSpeed;
+  }
+}
+
+function DOM_updateDifference(currMonth, last3MonthsInfo) {
+  var differenceDOM = document
+    .getElementById("currentMonth")
+    .getElementsByClassName("difference")[0];
+
+  DOM_removeAllChildNodes(differenceDOM);
+
+  var diffAvgSpeed = currMonth.avgSpeedValue - last3MonthsInfo.avgSpeedValue;
+  var diffMaxSpeed = currMonth.maxSpeedValue - last3MonthsInfo.maxSpeedValue;
+  var diffElapsedAvgSpeed =
+    currMonth.elapsedAvgSpeedValue - last3MonthsInfo.elapsedAvgSpeedValue;
+
+  DOM_createDifferenceSpan(diffAvgSpeed, differenceDOM);
+  DOM_createDifferenceSpan(diffMaxSpeed, differenceDOM);
+  DOM_createDifferenceSpan(diffElapsedAvgSpeed, differenceDOM);
+}
+
+function DOM_createDifferenceSpan(value, parent) {
+  var difference = document.createElement("span");
+  difference.className = (value > 0 ? "green" : "red") + " small";
+
+  var sign = "";
+  if (value > 0) {
+    sign = "+";
+  }
+
+  difference.innerHTML = sign + value + " " + SPEED_UNIT;
+  parent.appendChild(difference);
+
+  return difference;
+}
+
+function DOM_removeAllChildNodes(parent) {
+  while (parent.hasChildNodes()) {
+    parent.removeChild(parent.lastChild);
+  }
 }
