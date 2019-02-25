@@ -43,6 +43,9 @@
   footer {
     grid-template-columns: auto 1280px auto;
   }
+  footer .author {
+    padding-left: 15px;
+  }
   header {
     height: 60px;
   }

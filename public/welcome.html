@@ -125,7 +125,57 @@
           </item>
         </container>
       </summary>
-      <main-content> </main-content>
+      <main-content>
+        <top>
+          <menus></menus>
+          <filters></filters>
+        </top>
+        <bottom>
+          <loader class="table-loader"></loader>
+          <table id="main-table">
+            <thead>
+              <tr>
+                <th>Sel.</th>
+                <th>Name</th>
+                <th>Date</th>
+                <th>Moving Time</th>
+                <th>Avg. Speed</th>
+                <th>Elapsed Time</th>
+                <th>Elapsed Avg. Time</th>
+                <th>Max Speed</th>
+              </tr>
+            </thead>
+            <tfoot>
+              <tr>
+                <th colspan="3">Total:</th>
+                <th>120:25</th>
+                <th>21.5 km/h</th>
+                <th>120:25</th>
+                <th>18.5 km/h</th>
+                <th>58 km/h</th>
+              </tr>
+            </tfoot>
+            <tbody>
+              <tr>
+                <td>John Lennon</td>
+                <td>Rhythm Guitar</td>
+              </tr>
+              <tr>
+                <td>Paul McCartney</td>
+                <td>Bass</td>
+              </tr>
+              <tr>
+                <td>George Harrison</td>
+                <td>Lead Guitar</td>
+              </tr>
+              <tr>
+                <td>Ringo Starr</td>
+                <td>Drums</td>
+              </tr>
+            </tbody>
+          </table>
+        </bottom>
+      </main-content>
       <footer>
         <span class="author"> Bartłomiej Marek</span>
       </footer>

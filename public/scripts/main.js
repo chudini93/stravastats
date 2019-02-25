@@ -6,7 +6,7 @@ var token = {
   accessToken: "",
   refreshToken: "",
   tokenType: "Bearer",
-  expiresAt: 0
+  expiresAt: null
 };
 
 var athleteId = "";

@@ -2,6 +2,7 @@
 @mainColor: #94e092;
 @white: #ffffff;
 @grey: #b5b5b5;
+@darkGrey: #bdbebf;
 @shadowColor: #00000038;
 @red: #c56876;
 @blue: #7cd8eb;
@@ -46,11 +47,23 @@ summary {
 main-content {
   display: grid;
   margin: 0 auto;
-  grid-template-columns: repeat(1fr);
-  grid-gap: 10px;
-  align-items: center;
+  grid-template-rows: 55px auto;
+  text-align: center;
   background-color: @white;
   box-shadow: 1px 2px 6px #00000038;
+  top {
+    background-color: @darkGrey;
+    height: 55px;
+  }
+  bottom {
+    table {
+      width: 100%;
+    }
+
+    tfoot {
+      justify-content: end;
+    }
+  }
 }
 
 .main-container {
@@ -294,6 +307,24 @@ header {
   }
 }
 
+.table-loader {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  background-color: rgba(255, 255, 255, 0.65);
+  border-top: 5px solid @grey;
+  visibility: visible;
+}
+.table-loader:after {
+  content: " ";
+  display: block;
+  width: 100%;
+  border-top: 5px solid @green;
+  animation: loading 2s linear infinite;
+  margin-top: -5px;
+}
+
 .summary-loader {
   position: absolute;
   height: 100%;
@@ -335,6 +366,6 @@ header {
   }
 }
 
-@import url("./resolutions/1280+.less");
-@import url("./resolutions/1024-1280.less");
+@import url("./resolutions/1280+.css");
+@import url("./resolutions/1024-1280.css");
 @import url("./resolutions/768-1024.css");
