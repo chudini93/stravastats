@@ -2,6 +2,13 @@ var currentYear = new Date().getFullYear();
 var currentMonth = new Date().getMonth();
 
 async function loadActivitiesForAuthenticatedAthlete() {
+  var loader = document
+    .getElementsByTagName("main-content")[0]
+    .getElementsByTagName("bottom")[0]
+    .getElementsByTagName("loader")[0];
+
+  DOM_setVisibility(loader, true);
+
   var activities = await request(
     "GET",
     `https://www.strava.com/api/v3/athlete/activities`
@@ -37,7 +44,11 @@ async function loadActivitiesForAuthenticatedAthlete() {
     activityRecords.push(record);
   });
 
+  DOM_updateTableContent(activityRecords);
+
   console.log("activities: ", activityRecords);
+
+  DOM_setVisibility(loader, false);
 }
 
 async function getCurrentMonthSummaryInfo() {

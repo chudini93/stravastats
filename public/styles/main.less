@@ -8,6 +8,7 @@
 @blue: #7cd8eb;
 @yellow: #ffe88c;
 @green: #94e092;
+@tableHeaderBg: #f2f4f6;
 
 @import url("https://fonts.googleapis.com/css?family=Lato:300,400,700&subset=latin-ext");
 
@@ -57,7 +58,32 @@ main-content {
   }
   bottom {
     table {
+      border-collapse: collapse;
+      border-spacing: 3em;
       width: 100%;
+
+      thead {
+        background-color: @tableHeaderBg;
+        tr {
+          height: 45px;
+          td {
+            font-size: 16px;
+            font-weight: bold;
+          }
+        }
+      }
+      tbody tr {
+        font-size: 14px;
+        font-weight: 300;
+        padding: 5px 0;
+      }
+      tr > td {
+        padding-top: 1em;
+      }
+      tfoot,
+      tbody {
+        border-top: 1px solid @darkGrey;
+      }
     }
 
     tfoot {
@@ -308,13 +334,12 @@ header {
 }
 
 .table-loader {
-  position: absolute;
   height: 100%;
   width: 100%;
   margin: 0;
   background-color: rgba(255, 255, 255, 0.65);
   border-top: 5px solid @grey;
-  visibility: visible;
+  visibility: collapse;
 }
 .table-loader:after {
   content: " ";

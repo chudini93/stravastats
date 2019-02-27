@@ -50,7 +50,7 @@ async function loadData(showLoader = true, manualReload = false) {
 
   if (!isTestMode || manualReload) {
     loadAthleteStats(athleteId);
-    // loadActivitiesForAuthenticatedAthlete();
+    loadActivitiesForAuthenticatedAthlete();
   }
 
   if (manualReload) {
@@ -303,6 +303,37 @@ function DOM_createDifferenceSpan(value, parent) {
   parent.appendChild(difference);
 
   return difference;
+}
+
+function DOM_updateTableContent(activities) {
+  var tableContentDOM = document.getElementById("table-content");
+
+  DOM_removeAllChildNodes(tableContentDOM);
+
+  activities.forEach(element => {
+    DOM_createTableRow(element, tableContentDOM);
+  });
+}
+
+function DOM_createTableRow(activity, parent) {
+  var tr = document.createElement("tr");
+
+  DOM_createElement("td", "", tr);
+  DOM_createElement("td", activity.name, tr);
+  DOM_createElement("td", activity.date, tr);
+  DOM_createElement("td", activity.movingTime, tr);
+  DOM_createElement("td", activity.avgSpeed, tr);
+  DOM_createElement("td", activity.elapsedTime, tr);
+  DOM_createElement("td", activity.elapsedAvgSpeed, tr);
+  DOM_createElement("td", activity.maxSpeed, tr);
+
+  parent.appendChild(tr);
+}
+
+function DOM_createElement(element, text, parent) {
+  var el = document.createElement(element);
+  parent.appendChild(el);
+  el.innerHTML = text;
 }
 
 function DOM_removeAllChildNodes(parent) {
