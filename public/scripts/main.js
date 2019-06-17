@@ -285,9 +285,9 @@ function DOM_updateDifference(currMonth, last3MonthsInfo) {
   var diffElapsedAvgSpeed =
     currMonth.elapsedAvgSpeedValue - last3MonthsInfo.elapsedAvgSpeedValue;
 
-  DOM_createDifferenceSpan(diffAvgSpeed, differenceDOM);
-  DOM_createDifferenceSpan(diffMaxSpeed, differenceDOM);
-  DOM_createDifferenceSpan(diffElapsedAvgSpeed, differenceDOM);
+  DOM_createDifferenceSpan(diffAvgSpeed.toFixed(2), differenceDOM);
+  DOM_createDifferenceSpan(diffMaxSpeed.toFixed(2), differenceDOM);
+  DOM_createDifferenceSpan(diffElapsedAvgSpeed.toFixed(2), differenceDOM);
 }
 
 function DOM_createDifferenceSpan(value, parent) {
